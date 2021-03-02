@@ -1,2 +1,1 @@
-# flask-api-template
-Flask API Template
+# Flask API Template
