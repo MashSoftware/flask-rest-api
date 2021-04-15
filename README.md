@@ -1,1 +1,1 @@
-# Flask API Template
+# Flask REST API Template
