@@ -11,9 +11,19 @@ This template repository contains a [Flask](https://flask.palletsprojects.com) a
 
 ### Optional
 
-- ???
+- Redis 4.0.x or higher (for rate limiting, otherwise in-memory storage is used)
 
 ## Getting started
+
+### Create local Postgres database
+
+```shell
+sudo service postgresql start
+sudo su - postgres -c "create user mash with password mash"
+sudo su - postgres -c "createdb thing"
+sudo -u postgres psql
+grant all privileges on database thing to mash;
+```
 
 ### Create venv and install requirements
 
