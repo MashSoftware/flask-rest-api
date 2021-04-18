@@ -1,0 +1,1 @@
+web: gunicorn flask_rest_api:app --log-file -
