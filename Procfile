@@ -1,1 +1,1 @@
-web: gunicorn flask_rest_api:app --log-file -
+web: flask db upgrade; gunicorn flask_rest_api:app --log-file -
