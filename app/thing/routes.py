@@ -27,7 +27,7 @@ def get_things():
             .order_by(Thing.created_at.desc())
             .all()
         )
-    else
+    else:
         things = Thing.query.order_by(Thing.created_at.desc()).all()
 
     if things:
@@ -49,7 +49,7 @@ def get_things():
 @produces("application/json")
 def create_thing():
     """Create a new Thing."""
-    
+
     # Validate request against schema
     try:
         validate(request.json, thing_schema, format_checker=FormatChecker())
@@ -81,13 +81,13 @@ def get_thing(thing_id):
 @produces("application/json")
 def update_thing(thing_id):
     """Update a Thing with a specific ID."""
-    
+
     # Validate request against schema
     try:
         validate(request.json, thing_schema, format_checker=FormatChecker())
     except ValidationError as e:
         raise BadRequest(e.message)
-    
+
     thing = Thing.query.get_or_404(str(thing_id))
 
     thing.name = request.json["name"].title()
