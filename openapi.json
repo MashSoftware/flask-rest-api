@@ -20,7 +20,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:{port}/{version}/",
+      "url": "http://localhost:{port}/{version}",
       "description": "Local development",
       "variables": {
         "port": {
@@ -32,7 +32,7 @@
       }
     },
     {
-      "url": "https://mash-flask-rest-api.herokuapp.com/{version}/",
+      "url": "https://mash-flask-rest-api.herokuapp.com/{version}",
       "description": "Production",
       "variables": {
         "version": {
