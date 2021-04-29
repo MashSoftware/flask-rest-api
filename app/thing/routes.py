@@ -22,11 +22,7 @@ def get_things():
     name_query = request.args.get("name", type=str)
 
     if name_query:
-        things = (
-            Thing.query.filter(Thing.name.ilike("%{}%".format(name_query)))
-            .order_by(Thing.created_at.desc())
-            .all()
-        )
+        things = Thing.query.filter(Thing.name.ilike("%{}%".format(name_query))).order_by(Thing.created_at.desc()).all()
     else:
         things = Thing.query.order_by(Thing.created_at.desc()).all()
 
