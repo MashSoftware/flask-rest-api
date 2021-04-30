@@ -33,6 +33,12 @@ source venv/bin/activate
 pip3 install -r requirements.txt ; pip3 install -r requirements_dev.txt
 ```
 
+### Run database migrations
+
+```shell
+flask db upgrade
+```
+
 ### Run app
 
 ```shell
