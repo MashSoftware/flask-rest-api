@@ -63,6 +63,28 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Attriubute to sort on",
+            "required": true,
+            "example": "created_at",
+            "schema": {
+              "type": "string",
+              "enum": ["name", "created_at", "updated_at"]
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "Order of sorted attribute",
+            "required": true,
+            "example": "desc",
+            "schema": {
+              "type": "string",
+              "enum": ["asc", "desc"]
+            }
           }
         ],
         "responses": {
