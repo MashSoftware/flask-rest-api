@@ -67,7 +67,7 @@
           {
             "name": "sort",
             "in": "query",
-            "description": "Attriubute to sort on",
+            "description": "Attribute to sort on",
             "required": true,
             "example": "created_at",
             "schema": {
