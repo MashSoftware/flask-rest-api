@@ -17,19 +17,17 @@ thing_schema = openapi["components"]["schemas"]["ThingRequest"]
 
 @bp.route("", methods=["GET"])
 @produces("application/json")
-def get_things():
+def list_things():
     """Get a list of Things."""
     name_query = request.args.get("name", type=str)
 
     if name_query:
-        things = Thing.query.filter(Thing.name.ilike("%{}%".format(name_query))).order_by(Thing.created_at.desc()).all()
+        things = Thing.query.filter(Thing.name.ilike("%{}%".format(name_query))).order_by(Thing.name.desc()).all()
     else:
-        things = Thing.query.order_by(Thing.created_at.desc()).all()
+        things = Thing.query.order_by(Thing.name.desc()).all()
 
     if things:
-        results = []
-        for thing in things:
-            results.append(thing.as_dict())
+        results = [thing.list_item() for thing in things]
 
         return Response(
             json.dumps(results, sort_keys=True, separators=(",", ":")),
@@ -52,7 +50,7 @@ def create_thing():
     except ValidationError as e:
         raise BadRequest(e.message)
 
-    thing = Thing(name=request.json["name"])
+    thing = Thing(name=request.json["name"], colour=request.json["colour"])
 
     db.session.add(thing)
     db.session.commit()
@@ -86,7 +84,8 @@ def update_thing(thing_id):
 
     thing = Thing.query.get_or_404(str(thing_id))
 
-    thing.name = request.json["name"].title()
+    thing.name = request.json["name"].title().strip()
+    thing.colour = request.json["colour"].strip()
     thing.updated_at = datetime.utcnow()
 
     db.session.add(thing)
