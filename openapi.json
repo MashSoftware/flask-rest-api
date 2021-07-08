@@ -51,7 +51,7 @@
     "/things": {
       "get": {
         "description": "Retrieve a list of things",
-        "operationId": "get_things",
+        "operationId": "list_things",
         "tags": ["Thing"],
         "parameters": [
           {
@@ -95,7 +95,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Thing"
+                    "$ref": "#/components/schemas/ThingItem"
                   }
                 }
               }
@@ -282,6 +282,21 @@
   },
   "components": {
     "schemas": {
+      "ThingRequest": {
+        "type": "object",
+        "required": ["name", "colour"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Matt",
+            "maxLength": 32
+          },
+          "colour": {
+            "type": "string",
+            "enum": ["red", "green", "blue"]
+          }
+        }
+      },
       "Thing": {
         "type": "object",
         "properties": {
@@ -294,6 +309,10 @@
             "type": "string",
             "example": "Matt",
             "maxLength": 32
+          },
+          "colour": {
+            "type": "string",
+            "enum": ["red", "green", "blue"]
           },
           "created_at": {
             "type": "string",
@@ -308,14 +327,22 @@
           }
         }
       },
-      "ThingRequest": {
+      "ThingItem": {
         "type": "object",
-        "required": ["name"],
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "d9ecd6ee-3ab8-473b-9585-bc653024bed9"
+          },
           "name": {
             "type": "string",
             "example": "Matt",
             "maxLength": 32
+          },
+          "colour": {
+            "type": "string",
+            "enum": ["red", "green", "blue"]
           }
         }
       },
