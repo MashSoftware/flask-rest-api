@@ -19,18 +19,28 @@ thing_schema = openapi["components"]["schemas"]["ThingRequest"]
 @produces("application/json")
 def list_things():
     """Get a list of Things."""
+    sort_by = request.args.get("sort", type=str)
     name_query = request.args.get("name", type=str)
+    colour_filter = request.args.get("colour", type=str)
+
+    query = Thing.query
 
     if name_query:
-        things = Thing.query.filter(Thing.name.ilike("%{}%".format(name_query))).order_by(Thing.name.desc()).all()
+        query = query.filter(Thing.name.ilike(f"%{name_query}%"))
+    if colour_filter:
+        query = query.filter(Thing.colour == colour_filter)
+    if sort_by != "name":
+        query = query.order_by(getattr(Thing, sort_by).asc(), Thing.name.asc())
     else:
-        things = Thing.query.order_by(Thing.name.desc()).all()
+        query = query.order_by(Thing.name.asc())
+    
+    things = query.all()
 
     if things:
         results = [thing.list_item() for thing in things]
 
         return Response(
-            json.dumps(results, sort_keys=True, separators=(",", ":")),
+            json.dumps(results, separators=(",", ":")),
             mimetype="application/json",
             status=200,
         )
