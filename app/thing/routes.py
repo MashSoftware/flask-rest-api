@@ -29,7 +29,7 @@ def list_things():
         query = query.filter(Thing.name.ilike(f"%{name_query}%"))
     if colour_filter:
         query = query.filter(Thing.colour == colour_filter)
-    if sort_by != "name":
+    if sort_by and sort_by != "name":
         query = query.order_by(getattr(Thing, sort_by).asc(), Thing.name.asc())
     else:
         query = query.order_by(Thing.name.asc())
