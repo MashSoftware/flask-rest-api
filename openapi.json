@@ -24,7 +24,7 @@
       "description": "Local development",
       "variables": {
         "port": {
-          "default": "3000"
+          "default": "3001"
         },
         "version": {
           "default": "v1"
@@ -43,11 +43,247 @@
   ],
   "tags": [
     {
+      "name": "User",
+      "description": "Operations on the User resource"
+    },
+    {
       "name": "Thing",
       "description": "Operations on the Thing resource"
     }
   ],
   "paths": {
+    "/users": {
+      "get": {
+        "description": "Retrieve a list of users",
+        "operationId": "list_users",
+        "tags": ["User"],
+        "parameters": [
+          {
+            "name": "email_address",
+            "in": "query",
+            "description": "Email address to filter by",
+            "required": false,
+            "example": "mash@example.com",
+            "schema": {
+              "type": "string",
+              "format": "email"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Attribute to sort on",
+            "required": true,
+            "example": "created_at",
+            "schema": {
+              "type": "string",
+              "enum": ["email_address", "created_at", "updated_at"]
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "Order of sorted attribute",
+            "required": true,
+            "example": "desc",
+            "schema": {
+              "type": "string",
+              "enum": ["asc", "desc"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserItem"
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No users found"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a new user",
+        "operationId": "create_user",
+        "tags": ["User"],
+        "requestBody": {
+          "description": "New user data to create",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Newly created user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            },
+            "headers": {
+              "Location": {
+                "description": "URL of the newly created user",
+                "schema": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "description": "Retrieve a user with a specific ID",
+        "operationId": "get_user",
+        "tags": ["User"],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "ID of the user to retrieve",
+            "required": true,
+            "example": "d9ecd6ee-3ab8-473b-9585-bc653024bed9",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Update a user with a specific ID",
+        "operationId": "update_user",
+        "tags": ["User"],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "ID of the user to update",
+            "required": true,
+            "example": "d9ecd6ee-3ab8-473b-9585-bc653024bed9",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRequest"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a user with a specific ID",
+        "operationId": "delete_user",
+        "tags": ["User"],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "ID of the user to delete",
+            "required": true,
+            "example": "d9ecd6ee-3ab8-473b-9585-bc653024bed9",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User deleted"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/things": {
       "get": {
         "description": "Retrieve a list of things",
@@ -282,6 +518,67 @@
   },
   "components": {
     "schemas": {
+      "UserRequest": {
+        "type": "object",
+        "required": ["email_address", "password"],
+        "properties": {
+          "email_address": {
+            "type": "string",
+            "format": "email",
+            "example": "mash@example.com",
+            "maxLength": 256
+          },
+          "password": {
+            "type": "string",
+            "example": "CorrectHorseBatteryStaple",
+            "minLength": 8,
+            "maxLength": 72
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "d9ecd6ee-3ab8-473b-9585-bc653024bed9"
+          },
+          "email_address": {
+            "type": "string",
+            "format": "email",
+            "example": "mash@example.com",
+            "maxLength": 256
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-04-20T22:04:51.583801+01:00"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "example": "2021-04-20T22:16:57.492478+01:00"
+          }
+        }
+      },
+      "UserItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "d9ecd6ee-3ab8-473b-9585-bc653024bed9"
+          },
+          "email_address": {
+            "type": "string",
+            "format": "email",
+            "example": "mash@example.com",
+            "maxLength": 256
+          }
+        }
+      },
       "ThingRequest": {
         "type": "object",
         "required": ["name", "colour"],

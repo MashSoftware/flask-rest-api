@@ -25,8 +25,10 @@ def create_app(config_class=Config):
 
     # Register blueprints
     from app.thing import bp as thing_bp
+    from app.user import bp as user_bp
 
     app.register_blueprint(thing_bp, url_prefix="/v1/things")
+    app.register_blueprint(user_bp, url_prefix="/v1/users")
 
     from app.main import bp as main_bp
 
@@ -41,4 +43,4 @@ def create_app(config_class=Config):
     return app
 
 
-from app import models  # noqa: E402, F401
+from app import models, user  # noqa: E402, F401
