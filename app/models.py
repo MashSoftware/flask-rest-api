@@ -27,7 +27,7 @@ class User(db.Model):
     # Methods
     def __init__(self, email_address, password):
         self.id = str(uuid.uuid4())
-        self.email_address = email_address.lower()
+        self.email_address = email_address.lower().strip()
         self.created_at = datetime.utcnow()
         self.set_password(password)
 
