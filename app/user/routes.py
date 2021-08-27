@@ -7,9 +7,12 @@ from app import db
 from app.models import User
 from app.user import bp
 from flask import Response, request, url_for
+from flask_httpauth import HTTPTokenAuth
 from flask_negotiate import consumes, produces
 from jsonschema import FormatChecker, ValidationError, validate
 from werkzeug.exceptions import BadRequest
+
+auth = HTTPTokenAuth(scheme="Bearer")
 
 # JSON schema for user requests
 with open("openapi.json") as json_file:
@@ -17,8 +20,14 @@ with open("openapi.json") as json_file:
 user_schema = openapi["components"]["schemas"]["UserRequest"]
 
 
+@auth.verify_token
+def authenticate(token):
+    return User.verify_token(token)
+
+
 @bp.route("", methods=["GET"])
 @produces("application/json", "text/csv")
+@auth.login_required
 def list_users():
     """Get a list of Users."""
     sort_by = request.args.get("sort", type=str)
@@ -105,6 +114,7 @@ def create_user():
 
 @bp.route("/<uuid:user_id>", methods=["GET"])
 @produces("application/json")
+@auth.login_required
 def get_user(user_id):
     """Get a User with a specific ID."""
     user = User.query.get_or_404(str(user_id))
@@ -115,6 +125,7 @@ def get_user(user_id):
 @bp.route("/<uuid:user_id>", methods=["PUT"])
 @consumes("application/json")
 @produces("application/json")
+@auth.login_required
 def update_user(user_id):
     """Update a User with a specific ID."""
 
@@ -137,6 +148,7 @@ def update_user(user_id):
 
 @bp.route("/<uuid:user_id>", methods=["DELETE"])
 @produces("application/json")
+@auth.login_required
 def delete_user(user_id):
     """Delete a User with a specific ID."""
     user = User.query.get_or_404(str(user_id))

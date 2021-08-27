@@ -4,12 +4,15 @@ from datetime import datetime
 from io import StringIO
 
 from app import db
-from app.models import Thing
+from app.models import Thing, User
 from app.thing import bp
 from flask import Response, request, url_for
+from flask_httpauth import HTTPTokenAuth
 from flask_negotiate import consumes, produces
 from jsonschema import FormatChecker, ValidationError, validate
 from werkzeug.exceptions import BadRequest
+
+auth = HTTPTokenAuth(scheme="Bearer")
 
 # JSON schema for thing requests
 with open("openapi.json") as json_file:
@@ -17,8 +20,14 @@ with open("openapi.json") as json_file:
 thing_schema = openapi["components"]["schemas"]["ThingRequest"]
 
 
+@auth.verify_token
+def authenticate(token):
+    return User.verify_token(token)
+
+
 @bp.route("", methods=["GET"])
 @produces("application/json", "text/csv")
+@auth.login_required
 def list_things():
     """Get a list of Things."""
     sort_by = request.args.get("sort", type=str)
@@ -84,6 +93,7 @@ def list_things():
 @bp.route("", methods=["POST"])
 @consumes("application/json")
 @produces("application/json")
+@auth.login_required
 def create_thing():
     """Create a new Thing."""
 
@@ -93,7 +103,11 @@ def create_thing():
     except ValidationError as e:
         raise BadRequest(e.message)
 
-    thing = Thing(name=request.json["name"], colour=request.json["colour"])
+    thing = Thing(
+        name=request.json["name"],
+        colour=request.json["colour"],
+        user_id=auth.current_user().id,
+    )
 
     db.session.add(thing)
     db.session.commit()
@@ -106,6 +120,7 @@ def create_thing():
 
 @bp.route("/<uuid:thing_id>", methods=["GET"])
 @produces("application/json")
+@auth.login_required
 def get_thing(thing_id):
     """Get a Thing with a specific ID."""
     thing = Thing.query.get_or_404(str(thing_id))
@@ -116,6 +131,7 @@ def get_thing(thing_id):
 @bp.route("/<uuid:thing_id>", methods=["PUT"])
 @consumes("application/json")
 @produces("application/json")
+@auth.login_required
 def update_thing(thing_id):
     """Update a Thing with a specific ID."""
 
@@ -139,6 +155,7 @@ def update_thing(thing_id):
 
 @bp.route("/<uuid:thing_id>", methods=["DELETE"])
 @produces("application/json")
+@auth.login_required
 def delete_thing(thing_id):
     """Delete a Thing with a specific ID."""
     thing = Thing.query.get_or_404(str(thing_id))
