@@ -49,6 +49,10 @@
     {
       "name": "Thing",
       "description": "Operations on the Thing resource"
+    },
+    {
+      "name": "Authentication",
+      "description": "User authentication operations"
     }
   ],
   "paths": {
@@ -57,6 +61,11 @@
         "description": "Retrieve a list of users",
         "operationId": "list_users",
         "tags": ["User"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "email_address",
@@ -108,6 +117,9 @@
           },
           "204": {
             "description": "No users found"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
           },
           "default": {
             "description": "Unexpected error",
@@ -174,6 +186,11 @@
         "description": "Retrieve a user with a specific ID",
         "operationId": "get_user",
         "tags": ["User"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_id",
@@ -198,6 +215,9 @@
               }
             }
           },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
           "default": {
             "description": "Unexpected error",
             "content": {
@@ -214,6 +234,11 @@
         "description": "Update a user with a specific ID",
         "operationId": "update_user",
         "tags": ["User"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_id",
@@ -238,6 +263,9 @@
               }
             }
           },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
           "default": {
             "description": "Unexpected error",
             "content": {
@@ -254,6 +282,11 @@
         "description": "Delete a user with a specific ID",
         "operationId": "delete_user",
         "tags": ["User"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_id",
@@ -271,6 +304,9 @@
           "204": {
             "description": "User deleted"
           },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
           "default": {
             "description": "Unexpected error",
             "content": {
@@ -284,11 +320,43 @@
         }
       }
     },
+    "/auth/token": {
+      "get": {
+        "description": "Retrieve an authentication token",
+        "operationId": "get_token",
+        "tags": ["Authentication"],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "JWT authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    },
     "/things": {
       "get": {
         "description": "Retrieve a list of things",
         "operationId": "list_things",
         "tags": ["Thing"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "name",
@@ -340,6 +408,9 @@
           "204": {
             "description": "No things found"
           },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
           "default": {
             "description": "Unexpected error",
             "content": {
@@ -356,6 +427,11 @@
         "description": "Create a new thing",
         "operationId": "create_thing",
         "tags": ["Thing"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "description": "New thing data to create",
           "required": true,
@@ -387,6 +463,9 @@
               }
             }
           },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
           "default": {
             "description": "Unexpected error",
             "content": {
@@ -405,6 +484,11 @@
         "description": "Retrieve a thing with a specific ID",
         "operationId": "get_thing",
         "tags": ["Thing"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "thing_id",
@@ -429,6 +513,9 @@
               }
             }
           },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
           "default": {
             "description": "Unexpected error",
             "content": {
@@ -445,6 +532,11 @@
         "description": "Update a thing with a specific ID",
         "operationId": "update_thing",
         "tags": ["Thing"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "thing_id",
@@ -469,6 +561,9 @@
               }
             }
           },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
           "default": {
             "description": "Unexpected error",
             "content": {
@@ -485,6 +580,11 @@
         "description": "Delete a thing with a specific ID",
         "operationId": "delete_thing",
         "tags": ["Thing"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "thing_id",
@@ -501,6 +601,9 @@
         "responses": {
           "204": {
             "description": "Thing deleted"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
           },
           "default": {
             "description": "Unexpected error",
@@ -611,6 +714,11 @@
             "type": "string",
             "enum": ["red", "green", "blue"]
           },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "d9ecd6ee-3ab8-473b-9585-bc653024bed9"
+          },
           "created_at": {
             "type": "string",
             "format": "date-time",
@@ -643,6 +751,15 @@
           }
         }
       },
+      "Token": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+          }
+        }
+      },
       "Error": {
         "type": "object",
         "properties": {
@@ -660,6 +777,30 @@
             "example": "The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again."
           }
         }
+      }
+    },
+    "responses": {
+      "UnauthorizedError": {
+        "description": "Credentials are missing or invalid",
+        "headers": {
+          "WWW-Authenticate": {
+            "description": "The authentication method that should be used",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      },
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }
