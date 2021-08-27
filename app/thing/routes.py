@@ -10,7 +10,7 @@ from flask import Response, request, url_for
 from flask_httpauth import HTTPTokenAuth
 from flask_negotiate import consumes, produces
 from jsonschema import FormatChecker, ValidationError, validate
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest, Forbidden
 
 auth = HTTPTokenAuth(scheme="Bearer")
 
@@ -134,6 +134,8 @@ def get_thing(thing_id):
 @auth.login_required
 def update_thing(thing_id):
     """Update a Thing with a specific ID."""
+    if str(thing_id) not in [thing.id for thing in auth.current_user().things]:
+        raise Forbidden
 
     # Validate request against schema
     try:
@@ -158,6 +160,9 @@ def update_thing(thing_id):
 @auth.login_required
 def delete_thing(thing_id):
     """Delete a Thing with a specific ID."""
+    if str(thing_id) not in [thing.id for thing in auth.current_user().things]:
+        raise Forbidden
+
     thing = Thing.query.get_or_404(str(thing_id))
 
     db.session.delete(thing)
