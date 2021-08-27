@@ -82,7 +82,7 @@ pyyaml==5.4.1
     # via
     #   bandit
     #   dparse
-regex==2021.8.21
+regex==2021.8.27
     # via black
 requests==2.26.0
     # via
