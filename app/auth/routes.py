@@ -1,10 +1,11 @@
 import json
 
-from app.auth import bp
-from app.models import User
 from flask import Response
 from flask_httpauth import HTTPBasicAuth
 from flask_negotiate import produces
+
+from app.auth import bp
+from app.models import User
 
 auth = HTTPBasicAuth()
 

@@ -1,8 +1,9 @@
 import json
 
-from app.main import bp
 from flask import Response
 from werkzeug.exceptions import HTTPException, InternalServerError
+
+from app.main import bp
 
 
 @bp.route("/openapi", methods=["GET"])
