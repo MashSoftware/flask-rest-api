@@ -363,9 +363,20 @@
             "in": "query",
             "description": "Name to filter by",
             "required": false,
-            "example": "Matt",
+            "example": "Apple",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "colour",
+            "in": "query",
+            "description": "Colour to filter by",
+            "required": false,
+            "example": "red",
+            "schema": {
+              "type": "string",
+              "enum": ["red", "green", "blue", "yellow", "orange", "purple"]
             }
           },
           {
@@ -688,12 +699,12 @@
         "properties": {
           "name": {
             "type": "string",
-            "example": "Matt",
+            "example": "Apple",
             "maxLength": 32
           },
           "colour": {
             "type": "string",
-            "enum": ["red", "green", "blue"]
+            "enum": ["red", "green", "blue", "yellow", "orange", "purple"]
           }
         }
       },
@@ -707,12 +718,12 @@
           },
           "name": {
             "type": "string",
-            "example": "Matt",
+            "example": "Apple",
             "maxLength": 32
           },
           "colour": {
             "type": "string",
-            "enum": ["red", "green", "blue"]
+            "enum": ["red", "green", "blue", "yellow", "orange", "purple"]
           },
           "user_id": {
             "type": "string",
@@ -742,12 +753,12 @@
           },
           "name": {
             "type": "string",
-            "example": "Matt",
+            "example": "Apple",
             "maxLength": 32
           },
           "colour": {
             "type": "string",
-            "enum": ["red", "green", "blue"]
+            "enum": ["red", "green", "blue", "yellow", "orange", "purple"]
           }
         }
       },
