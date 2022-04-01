@@ -26,6 +26,18 @@ def authenticate(token):
     return User.verify_token(token)
 
 
+@auth.error_handler
+def auth_error(status):
+    return Response(
+        response=json.dumps(
+            {"code": status, "name": "Unauthorised"},
+            separators=(",", ":"),
+        ),
+        mimetype="application/json",
+        status=status,
+    )
+
+
 @bp.route("", methods=["GET"])
 @produces("application/json", "text/csv")
 @auth.login_required
