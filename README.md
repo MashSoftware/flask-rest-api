@@ -19,7 +19,7 @@ This template repository contains a [Flask](https://flask.palletsprojects.com) a
 
 ```shell
 sudo service postgresql start
-sudo su - postgres -c "create user mash with password mash"
+sudo su - postgres -c "create user mash with password 'mash'"
 sudo su - postgres -c "createdb thing"
 sudo -u postgres psql
 grant all privileges on database thing to mash;
