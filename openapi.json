@@ -376,7 +376,7 @@
             "example": "red",
             "schema": {
               "type": "string",
-              "enum": ["red", "green", "blue", "yellow", "orange", "purple"]
+              "enum": ["red", "green", "blue", "yellow", "orange", "purple", "black", "white"]
             }
           },
           {
@@ -704,7 +704,7 @@
           },
           "colour": {
             "type": "string",
-            "enum": ["red", "green", "blue", "yellow", "orange", "purple"]
+            "enum": ["red", "green", "blue", "yellow", "orange", "purple", "black", "white"]
           }
         }
       },
@@ -723,7 +723,7 @@
           },
           "colour": {
             "type": "string",
-            "enum": ["red", "green", "blue", "yellow", "orange", "purple"]
+            "enum": ["red", "green", "blue", "yellow", "orange", "purple", "black", "white"]
           },
           "user_id": {
             "type": "string",
@@ -758,7 +758,7 @@
           },
           "colour": {
             "type": "string",
-            "enum": ["red", "green", "blue", "yellow", "orange", "purple"]
+            "enum": ["red", "green", "blue", "yellow", "orange", "purple", "black", "white"]
           }
         }
       },
