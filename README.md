@@ -6,8 +6,8 @@ This template repository contains a [Flask](https://flask.palletsprojects.com) a
 
 ### Required
 
-- Python 3.6.x or higher
-- PostgreSQL 10.x or higher
+- Python 3.7.x or higher
+- PostgreSQL 11.x or higher
 
 ### Optional
 
@@ -19,9 +19,10 @@ This template repository contains a [Flask](https://flask.palletsprojects.com) a
 
 ```shell
 sudo service postgresql start
-sudo su - postgres -c "create user mash with password 'mash'"
-sudo su - postgres -c "createdb thing"
-sudo -u postgres psql
+sudo -su postgres
+psql
+create user mash with password 'mash';
+createdb thing;
 grant all privileges on database thing to mash;
 ```
 
