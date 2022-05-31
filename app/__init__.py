@@ -26,16 +26,14 @@ def create_app(config_class=Config):
 
     # Register blueprints
     from app.auth import bp as auth_bp
+    from app.main import bp as main_bp
     from app.thing import bp as thing_bp
     from app.user import bp as user_bp
 
+    app.register_blueprint(auth_bp, url_prefix="/v1/auth")
+    app.register_blueprint(main_bp)
     app.register_blueprint(thing_bp, url_prefix="/v1/things")
     app.register_blueprint(user_bp, url_prefix="/v1/users")
-    app.register_blueprint(auth_bp, url_prefix="/v1/auth")
-
-    from app.main import bp as main_bp
-
-    app.register_blueprint(main_bp)
 
     stream_handler = logging.StreamHandler()
     stream_handler.setLevel(logging.INFO)
