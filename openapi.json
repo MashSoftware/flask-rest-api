@@ -58,9 +58,11 @@
   "paths": {
     "/users": {
       "get": {
-        "description": "Retrieve a list of users",
+        "summary": "Retrieve a list of users",
         "operationId": "list_users",
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -86,7 +88,11 @@
             "example": "created_at",
             "schema": {
               "type": "string",
-              "enum": ["email_address", "created_at", "updated_at"]
+              "enum": [
+                "email_address",
+                "created_at",
+                "updated_at"
+              ]
             }
           },
           {
@@ -97,7 +103,10 @@
             "example": "desc",
             "schema": {
               "type": "string",
-              "enum": ["asc", "desc"]
+              "enum": [
+                "asc",
+                "desc"
+              ]
             }
           }
         ],
@@ -134,9 +143,11 @@
         }
       },
       "post": {
-        "description": "Create a new user",
+        "summary": "Create a new user",
         "operationId": "create_user",
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "requestBody": {
           "description": "New user data to create",
           "required": true,
@@ -183,9 +194,11 @@
     },
     "/users/{user_id}": {
       "get": {
-        "description": "Retrieve a user with a specific ID",
+        "summary": "Retrieve a user with a specific ID",
         "operationId": "get_user",
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -231,9 +244,11 @@
         }
       },
       "put": {
-        "description": "Update a user with a specific ID",
+        "summary": "Update a user with a specific ID",
         "operationId": "update_user",
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -279,9 +294,11 @@
         }
       },
       "delete": {
-        "description": "Delete a user with a specific ID",
+        "summary": "Delete a user with a specific ID",
         "operationId": "delete_user",
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -322,9 +339,11 @@
     },
     "/auth/token": {
       "get": {
-        "description": "Retrieve an authentication token",
+        "summary": "Retrieve an authentication token",
         "operationId": "get_token",
-        "tags": ["Authentication"],
+        "tags": [
+          "Authentication"
+        ],
         "security": [
           {
             "basicAuth": []
@@ -349,9 +368,11 @@
     },
     "/things": {
       "get": {
-        "description": "Retrieve a list of things",
+        "summary": "Retrieve a list of things",
         "operationId": "list_things",
-        "tags": ["Thing"],
+        "tags": [
+          "Thing"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -376,7 +397,27 @@
             "example": "red",
             "schema": {
               "type": "string",
-              "enum": ["red", "green", "blue", "yellow", "orange", "purple", "black", "white"]
+              "enum": [
+                "red",
+                "green",
+                "blue",
+                "yellow",
+                "orange",
+                "purple",
+                "black",
+                "white"
+              ]
+            }
+          },
+          {
+            "name": "quantity",
+            "in": "query",
+            "description": "Quantity to filter by",
+            "required": false,
+            "example": 4,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
             }
           },
           {
@@ -387,7 +428,13 @@
             "example": "created_at",
             "schema": {
               "type": "string",
-              "enum": ["name", "created_at", "updated_at"]
+              "enum": [
+                "name",
+                "colour",
+                "quantity",
+                "created_at",
+                "updated_at"
+              ]
             }
           },
           {
@@ -398,7 +445,10 @@
             "example": "desc",
             "schema": {
               "type": "string",
-              "enum": ["asc", "desc"]
+              "enum": [
+                "asc",
+                "desc"
+              ]
             }
           }
         ],
@@ -435,9 +485,11 @@
         }
       },
       "post": {
-        "description": "Create a new thing",
+        "summary": "Create a new thing",
         "operationId": "create_thing",
-        "tags": ["Thing"],
+        "tags": [
+          "Thing"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -492,9 +544,11 @@
     },
     "/things/{thing_id}": {
       "get": {
-        "description": "Retrieve a thing with a specific ID",
+        "summary": "Retrieve a thing with a specific ID",
         "operationId": "get_thing",
-        "tags": ["Thing"],
+        "tags": [
+          "Thing"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -540,9 +594,11 @@
         }
       },
       "put": {
-        "description": "Update a thing with a specific ID",
+        "summary": "Update a thing with a specific ID",
         "operationId": "update_thing",
-        "tags": ["Thing"],
+        "tags": [
+          "Thing"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -588,9 +644,11 @@
         }
       },
       "delete": {
-        "description": "Delete a thing with a specific ID",
+        "summary": "Delete a thing with a specific ID",
         "operationId": "delete_thing",
-        "tags": ["Thing"],
+        "tags": [
+          "Thing"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -634,7 +692,10 @@
     "schemas": {
       "UserRequest": {
         "type": "object",
-        "required": ["email_address", "password"],
+        "required": [
+          "email_address",
+          "password"
+        ],
         "properties": {
           "email_address": {
             "type": "string",
@@ -695,7 +756,11 @@
       },
       "ThingRequest": {
         "type": "object",
-        "required": ["name", "colour"],
+        "required": [
+          "name",
+          "colour",
+          "quantity"
+        ],
         "properties": {
           "name": {
             "type": "string",
@@ -704,7 +769,21 @@
           },
           "colour": {
             "type": "string",
-            "enum": ["red", "green", "blue", "yellow", "orange", "purple", "black", "white"]
+            "enum": [
+              "red",
+              "green",
+              "blue",
+              "yellow",
+              "orange",
+              "purple",
+              "black",
+              "white"
+            ]
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32",
+            "example": 4
           }
         }
       },
@@ -723,7 +802,21 @@
           },
           "colour": {
             "type": "string",
-            "enum": ["red", "green", "blue", "yellow", "orange", "purple", "black", "white"]
+            "enum": [
+              "red",
+              "green",
+              "blue",
+              "yellow",
+              "orange",
+              "purple",
+              "black",
+              "white"
+            ]
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32",
+            "example": 4
           },
           "user_id": {
             "type": "string",
@@ -758,7 +851,21 @@
           },
           "colour": {
             "type": "string",
-            "enum": ["red", "green", "blue", "yellow", "orange", "purple", "black", "white"]
+            "enum": [
+              "red",
+              "green",
+              "blue",
+              "yellow",
+              "orange",
+              "purple",
+              "black",
+              "white"
+            ]
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32",
+            "example": 4
           }
         }
       },
@@ -774,11 +881,6 @@
       "Error": {
         "type": "object",
         "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32",
-            "example": 404
-          },
           "name": {
             "type": "string",
             "example": "Not Found"
